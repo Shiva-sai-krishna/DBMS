@@ -1,0 +1,135 @@
+PL/SQL syntax
+
+to get output :
+set serveroutput on
+
+to create and edit file :
+ed filepath/name
+
+to compile and run :
+@ filepath/name
+
+to find out compilation errors :
+execute name
+
+basic structure :
+declare
+	--global vars
+	var_name var_type;
+begin
+	--local vars
+	statements;
+exception 
+	--optional
+end;
+/
+
+to print :
+dbms_output.put_line(message);
+-- concat with ||, only '' allowed
+-- use '' to add a ' in message
+
+datatypes :
+number
+varchar
+varchar2
+date --yyyy-mm-dd
+
+operators :
++,-,*,/,**  
+:= assignment
+>,<,>=,<=,=,!=   logical
+-- comment indicator
+/* 
+* comment 1
+* comment 2
+*/
+like   -- this is for regex
+between -- just use >= and <=
+in   --say x='m' then , x in ('a','b','c'), will return false
+
+conditional :
+if (condition) then
+	statement;
+elsif (condition) then
+	statement;
+else
+	statement;
+end if;
+
+loops :
+--
+loop
+	statement;
+	exit when condition --without()
+end loop;
+--
+while condition loop
+	statement;
+end loop;
+--
+for counter in a..b loop
+	statement;
+end loop;
+--
+exit; -- basically a break
+continue;
+
+varrays :
+type array_name is varray(size) of array_type; 
+/*
+*creates a variable array mention size
+*array_name(i) to access element
+*the indexes starts from 1
+* array_name.count; will return length of array
+*/
+var_name array_name :=array_name(); --to initilize all to null
+var_name array_name :=array_name(val1,val2,.....valsize);
+
+procedures :
+create or replace procedure name (var1 type,var2 out type) as
+-- parameter is in type by default
+-- in parameter are read only
+-- there is also in out 
+-- if no parameters then no ()
+begin
+	statement;
+end;
+/
+
+functions :
+create or replace function name (parameters) return type as 
+begin
+	statement;
+	return something;
+end;
+/
+
+cursors :
+cursor cursor_name is select col1,col2 from table order by col1 desc;
+--a cursor holds a piece of table.
+open cursor_name;
+close cursor_name;
+--requires opening and closing
+cursor_name%rowcount;
+--returns no of rows;
+cursor_name%notfound;
+-- returns false when all rows are traversed
+fetch cursor_name into var1,var2;
+-- will assign values to var1,2
+-- they must be of same datatype
+-- to traverse a cursor
+for row in mycursor 
+	statement;
+end loop;
+
+info from table :
+var_name table_name.col_name%type --will return datatype of col
+
+select col1,col2 into a,b where condition; --here a,b are vars
+select count(*) into var from table;
+
+
+
+
+

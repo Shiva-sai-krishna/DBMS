@@ -1,0 +1,121 @@
+ create table sailors(
+        sid integer,
+        sname varchar(30),
+        rating integer,
+        age real,
+constraint sailors_pk primary key(sid) using index tablespace sailors_index )
+tablespace sailors_data;
+
+
+prompt creating table Boats
+
+create table boats(
+        bid integer,
+        bname varchar(30),
+        color varchar(10),
+constraint boats_pk  primary key(bid) using index tablespace sailors_index )
+tablespace sailors_data;
+
+
+prompt creating table Reserves
+
+create table reserves(
+        sid integer,
+        bid integer,
+        day date,
+constraint reserves_pk primary key(sid,bid,day) using index tablespace sailors_index,
+constraint reserves_sailors_fk foreign key(sid) references sailors,
+constraint reserves_boats_fk   foreign key(bid) references boats
+        )
+tablespace sailors_data;
+
+prompt Inserting sailors rows
+
+-- alternative
+
+create table Sailors (
+	sid integer primary key,
+	name varchar(100),
+	rating integer,
+	age integer
+);
+
+drop table if exists Boats;
+create table Boats (
+	bid integer primary key,
+	name varchar(100),
+	color varchar(100)
+);
+
+drop table if exists Reserves;
+create table Reserves (
+	sid integer,
+	bid integer,
+	day integer, -- should be a date/datetime but...eh
+	foreign key (sid) references Sailors (sid),
+	foreign key (bid) references Boats (bid)
+);
+
+-- Insert sample data
+
+insert into sailors (sid, sname, rating, age)
+        values (22, 'Dustin', 7, 45.0);
+insert into sailors (sid, sname, rating, age)
+        values (29, 'Brutus', 1, 33.0);
+insert into sailors (sid, sname, rating, age)
+        values (31, 'Lubber', 8, 55.5);
+insert into sailors (sid, sname, rating, age)
+        values (32, 'Andy', 8, 25.5);
+insert into sailors (sid, sname, rating, age)
+        values (58, 'Rusty', 10, 35.0);
+insert into sailors (sid, sname, rating, age)
+        values (64, 'Horatio', 7, 35.0);
+insert into sailors (sid, sname, rating, age)
+        values (71, 'Zorba', 10, 16.0);
+insert into sailors (sid, sname, rating, age)
+        values (74, 'Horatio', 9, 35.0);
+insert into sailors (sid, sname, rating, age)
+        values (85, 'Art', 3, 25.5);
+insert into sailors (sid, sname, rating, age)
+        values (95, 'Bob', 3, 63.5);
+
+
+prompt Inserting boats rows
+
+insert into boats (bid, bname, color)
+        values (101, 'Interlake', 'blue');
+insert into boats (bid, bname, color)
+        values (102, 'Interlake', 'red');
+insert into boats (bid, bname, color)
+        values (103, 'Clipper', 'green');
+insert into boats (bid, bname, color)
+        values (104, 'Marine', 'red');
+
+
+
+prompt Inserting reserves rows
+
+insert into reserves (sid, bid, day)
+        values (22, 101, '10/10/98');
+insert into reserves (sid, bid, day)
+        values (22, 102, '10/10/98');
+insert into reserves (sid, bid, day)
+        values (22, 103, '10/8/98');
+insert into reserves (sid, bid, day)
+        values (22, 104, '10/7/98');
+insert into reserves (sid, bid, day)
+        values (31, 102, '11/10/98');
+insert into reserves (sid, bid, day)
+        values (31, 103, '11/6/98');
+insert into reserves (sid, bid, day)
+        values (31, 104, '11/12/98');
+insert into reserves (sid, bid, day)
+        values (64, 101, '9/5/98');
+insert into reserves (sid, bid, day)
+        values (64, 102, '9/8/98');
+insert into reserves (sid, bid, day)
+        values (74, 103, '9/8/98');
+
+prompt commiting changes
+
+commit;

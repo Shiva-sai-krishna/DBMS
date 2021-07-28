@@ -1,0 +1,261 @@
+create table reserves
+(
+	sid integer references sailors (sid),
+	bid integer references boats (bid),
+	day date
+);
+
+insert into sailors 
+values (29,'Brutus',1,33);
+
+insert all 
+into reserves values (22,101,to_date('10/10/98','mm/dd/yy'))
+into reserves values (22,102,to_date('10/10/98','mm/dd/yy'))
+into reserves values (22,103,to_date('10/8/98','mm/dd/yy'))
+into reserves values (22,104,to_date('10/7/98','mm/dd/yy'))
+into reserves values (31,102,to_date('11/10/98','mm/dd/yy'))
+into reserves values (31,103,to_date('11/6/98','mm/dd/yy'))
+into reserves values (31,104,to_date('11/12/98','mm/dd/yy'))
+into reserves values (64,101,to_date('9/5/98','mm/dd/yy'))
+into reserves values (64,102,to_date('9/8/98','mm/dd/yy'))
+into reserves values (74,103,to_date('9/8/98','mm/dd/yy'))
+select * from dual;
+
+1)
+select sname from sailors s, reserves r
+where r.sid=s.sid
+and r.bid=103;
+
+2)
+select unique sname from sailors s, reserves r, boats b
+where s.sid=r.sid
+and r.bid=b.bid
+and b.color='red';
+
+3)
+select unique color from sailors s,reserves r,boats b
+where s.sid=r.sid
+and r.bid=b.bid
+and s.sname='Lubber';
+
+4)
+select sname from reserves r,sailors s
+where s.sid=r.sid
+group by s.sid,sname;
+
+5)
+select sname from sailors s,reserves r,boats b
+where s.sid=r.sid
+and r.bid=b.bid
+and (b.color='red' 
+or b.color='green')
+group by s.sid,sname;
+
+6)
+select sname from sailors s,reserves r,boats b
+where s.sid=r.sid
+and r.bid=b.bid
+and b.color='red'
+intersect
+select sname from sailors s,reserves r,boats b
+where s.sid=r.sid
+and r.bid=b.bid
+and b.color='green';
+
+7)
+select sname from sailors s,reserves r,boats b
+where s.sid=r.sid
+and r.bid=b.bid
+group by s.sid,sname
+having count(r.sid)>1;
+
+8)
+select sid from sailors
+where age > 20
+intersect
+select s.sid from sailors s,reserves r,boats b
+where s.sid=r.sid
+and r.bid=b.bid
+and b.color='red';
+
+9)
+select s.sname from sailors s
+where not exists
+(select b.bid from boats b
+minus
+select r.bid from boats b,sailors ss,reserves r
+where  ss.sid=r.sid
+and r.bid=b.bid
+and ss.sid=s.sid);
+
+10)
+select s.sname from sailors s
+where not exists
+(select b.bid from boats b
+where b.bname='Interlake'
+minus
+select r.bid from boats b,sailors ss,reserves r
+where  ss.sid=r.sid
+and r.bid=b.bid
+and b.bname='Interlake'
+and ss.sid=s.sid);
+
+11)
+select * from sailors 
+where rating > 7;
+
+12)
+select sname ,age from sailors
+where rating >7;
+
+13)
+select s.sname,r.bid,r.day from sailors s,boats b,reserves r
+where s.sid=r.sid
+and r.bid=b.bid;
+
+
+14)
+select s.sname from sailors s
+where not exists
+(select b.bid from boats b
+where b.color='red'
+minus
+select r.bid from boats b,sailors ss,reserves r
+where  ss.sid=r.sid
+and r.bid=b.bid
+and b.color='red'
+and ss.sid=s.sid);
+
+15)
+select sname, age from sailors;
+
+16)
+select unique r.sid from boats b,sailors ss,reserves r
+where  ss.sid=r.sid
+and r.bid=b.bid
+and b.color='red';
+
+17)
+SELECT rating+1 FROM Sailor 
+WHERE sid IN 
+(SELECT sid FROM R2 
+GROUP BY date,sid 
+HAVING COUNT(*)=2);
+
+18)
+select sname, age from sailors 
+where sname like 'B__%B';
+
+19)
+select s.sid from sailors s,reserves r,boats b
+where s.sid=r.sid
+and r.bid=b.bid
+and b.color='red'
+minus
+select s.sid from sailors s,reserves r,boats b
+where s.sid=r.sid
+and r.bid=b.bid
+and b.color='green';
+
+20)
+select s.sid from sailors s,reserves r,boats b
+where s.sid=r.sid
+and r.bid=b.bid
+and (s.rating>10 
+or b.bid=104);
+
+21)
+select s.sid from sailors s,reserves r,boats b
+where s.sid=r.sid
+and r.bid=b.bid
+minus
+select s.sid from sailors s,reserves r,boats b
+where s.sid=r.sid
+and r.bid=b.bid
+and b.color='red';
+
+22)
+select sname from sailors 
+where rating> any (select rating from sailors 
+where sname='Horatio');
+
+23)
+select sname from sailors 
+where rating> all (select rating from sailors 
+where sname='Horatio');
+
+24)
+select * from sailors 
+where rating = (select max(rating) from sailors);
+
+25)
+select avg(age) from sailors;
+
+26)
+select avg(age) from sailors
+where rating=10;
+
+27)
+select sname, age from sailors 
+where age= (select max(age) from sailors);
+
+28)
+select count(*) from sailors;
+
+29)
+select count(unique sname) from sailors;
+
+
+30)
+select sname from sailors 
+where age> (select max(age) from sailors 
+where rating =10);
+
+31)
+select rating, min(age) from sailors
+group by rating
+order by rating;
+
+32)
+select rating,min(age) from sailors
+where age>=18
+group by rating
+having count(age)>1
+order by rating;
+
+33)
+select b.bid,b.color,count(r.sid) from sailors s,reserves r,boats b
+where s.sid=r.sid
+and r.bid=b.bid
+and b.color='red'
+group by b.bid,b.color;
+
+34)
+select rating,avg(age) from sailors
+group by rating
+having count(*)>1
+order by rating;
+
+35)
+select rating,avg(age) from sailors
+where age>=18
+group by rating
+having count(*)>1
+order by rating;
+
+36)
+select rating,avg(age) from sailors
+where age>=18
+group by rating
+having count(*)>1
+order by rating;
+
+37)
+select rating,avg(age) from sailors 
+group by rating
+having avg(age)=(
+select min(avg(age)) from sailors
+group by rating);
+
+
+

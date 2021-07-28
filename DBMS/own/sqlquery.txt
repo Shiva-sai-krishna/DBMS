@@ -1,0 +1,119 @@
+you can create, drop, truncate  table <name>
+create table test
+(
+name varchar2(100),
+age number,
+birth date
+);
+alter table <name> add <column> <datatype> //to add a column to existing table
+alter table <name> drop column <column>
+Alter table <name> modify <column>  <new data type>
+Alter table <name> rename <column> to  <new column name>
+Alter table <name> add primary key (<column name>);
+select <optional> <column> from <table name>  //optional can be distinct, count()
+
+
+where condition
+the condition can have >, <, <=,>=,= (there is no ==) ,!=    and   or   not
+order by <column1>,<column2> DESC                  // asc by default, specify for each column
+
+insert into <table> values(containing all fields)
+
+insert into <table> (selected fields) values (values of selected fields)
+
+
+
+delete from <table> where <condition>
+
+
+
+to update records
+
+update <table> set <field1>=<value1>, <field2>=<value2>  where <condition>
+
+without where clause all records will be updated
+
+
+
+where <column> like 'regex';
+
+%  == anything of anylength
+
+_   == anythong of 1 length
+
+
+
+
+
+
+
+while creating table
+
+<c-name> <c-datatype> primary key,
+
+<c-name> <c-datatype> references <tablename>(<c-name>),
+
+date
+
+to_date('01-01-1981','dd-mm-yyyy')
+
+to_char()
+
+Minus
+
+Union
+
+Intersect
+
+
+
+When filtering data with group by
+
+--> You need to use having for filtering with functions
+
+Eg)
+
+Select * from emp
+
+--where count(*) > 3 won't work
+
+Group by job
+
+Having count(*)>3
+
+-->unless it’s a function you cant select that column if its not in group by
+
+Ie) select rating, min(age) from sailors
+
+      group by rating
+
+You can do this but not this
+
+select rating, age from sailors
+
+group by rating
+
+When using > < etc with groups of data
+
+Use all, any,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
